@@ -73,6 +73,7 @@ jobs:
       - run:
           name: install PHP and Composer
           command: |
+            sudo killall -9 apt-get || true &&
             sudo apt-get update &&
             sudo apt-get install circleci-php-5.5.36 &&
             php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');" &&
