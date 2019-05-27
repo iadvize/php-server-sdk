@@ -1,13 +1,17 @@
 {
-    "name": "launchdarkly/server-sdk",
-    "description": "Official LaunchDarkly SDK for PHP",
+    "name": "iadvize/launchdarkly-server-sdk",
+    "description": "Fork of official LaunchDarkly SDK for PHP",
     "keywords": [
         "launchdarkly",
         "launchdarkly php"
     ],
-    "homepage": "https://github.com/launchdarkly/php-server-sdk",
+    "homepage": "https://github.com/iadvize/launchdarkly-php-server-sdk",
     "license": "Apache-2.0",
     "authors": [
+        {
+            "name": "iAdvize",
+            "homepage": "http://iadvize.com/"
+        },
         {
             "name": "LaunchDarkly <team@launchdarkly.com>",
             "homepage": "http://launchdarkly.com/"
