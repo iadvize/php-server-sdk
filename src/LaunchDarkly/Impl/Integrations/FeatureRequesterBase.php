@@ -55,6 +55,18 @@ class FeatureRequesterBase implements FeatureRequester
      * Override this method to read a set of JSON objects (as strings) from the underlying store.
      *
      * @param $namespace "features" or "segments"
+     * @param $keys array() flag or segment keys
+     * @return array|null array of stored JSON strings
+     */
+    protected function readItemStrings($namespace, $keys)
+    {
+        return array();
+    }
+
+    /**
+     * Override this method to read a set of JSON objects (as strings) from the underlying store.
+     *
+     * @param $namespace "features" or "segments"
      * @return array|null array of stored JSON strings
      */
     protected function readItemStringList($namespace)

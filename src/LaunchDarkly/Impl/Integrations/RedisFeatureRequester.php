@@ -37,6 +37,12 @@ class RedisFeatureRequester extends FeatureRequesterBase
         return $redis->hget("$this->_prefix:$namespace", $key);
     }
 
+    protected function readItemStrings($namespace, $keys)
+    {
+        $redis = $this->getConnection();
+        return $redis->hmget("$this->_prefix:$namespace", $keys);
+    }
+
     protected function readItemStringList($namespace)
     {
         $redis = $this->getConnection();
