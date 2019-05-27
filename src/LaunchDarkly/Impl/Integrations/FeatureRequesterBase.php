@@ -130,6 +130,27 @@ class FeatureRequesterBase implements FeatureRequester
     }
 
     /**
+     * Gets features
+     *
+     * @param $keys array()  Array of feature flag keys
+     * @return array()|null The decoded FeatureFlags, or null if missing
+     */
+    public function getFeatures($keys)
+    {
+        $jsonList = $this->getJsonItems(self::FEATURES_NAMESPACE, $keys);
+
+        $itemsOut = array();
+        foreach ($jsonList as $json) {
+            $flag = FeatureFlag::decode($json);
+            if ($flag && !$flag->isDeleted()) {
+                $itemsOut[$flag->getKey()] = $flag;
+            }
+        }
+
+        return $itemsOut;
+    }
+
+    /**
      * Gets all features
      *
      * @return array()|null The decoded FeatureFlags, or null if missing
@@ -160,6 +181,27 @@ class FeatureRequesterBase implements FeatureRequester
         return ($raw === null) ? null : json_decode($raw, true);
     }
 
+    protected function getJsonItems($namespace, $keys)
+    {
+        $cacheKeyName = implode($keys);
+        $cacheKey = $this->makeCacheKey($namespace, $cacheKeyName);
+        $raw = $this->_cache ? $this->_cache->getCachedString($cacheKey) : null;
+        if ($raw) {
+            $values = json_decode($raw, true);
+        } else {
+            $values = $this->readItemStrings($namespace, $keys);
+            if (!$values) {
+                $values = array();
+            }
+            if ($this->_cache) {
+                $this->_cache->putCachedString($cacheKey, json_encode(values));
+            }
+        }
+        foreach ($values as $i => $s) {
+            $values[$i] = json_decode($s, true);
+        }
+        return $values;
+    }
     protected function getJsonItemList($namespace)
     {
         $cacheKey = $this->makeCacheKey($namespace, self::ALL_ITEMS_KEY);

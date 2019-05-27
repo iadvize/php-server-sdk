@@ -88,7 +88,7 @@ class FeatureRequesterTestBase extends \PHPUnit_Framework_TestCase
 
         $fr = $this->makeRequester();
         $flags = $fr->getAllFeatures();
-        
+
         $this->assertEquals(2, count($flags));
         $flag1 = $flags[$flagKey1];
         $this->assertEquals($flagKey1, $flag1->getKey());
@@ -139,7 +139,7 @@ class FeatureRequesterTestBase extends \PHPUnit_Framework_TestCase
         $this->assertNull($segment);
     }
 
-    private static function makeFlagJson($key, $version, $deleted = false)
+    protected static function makeFlagJson($key, $version, $deleted = false)
     {
         return json_encode(array(
             'key' => $key,
@@ -161,7 +161,7 @@ class FeatureRequesterTestBase extends \PHPUnit_Framework_TestCase
         ));
     }
 
-    private static function makeSegmentJson($key, $version, $deleted = false)
+    protected static function makeSegmentJson($key, $version, $deleted = false)
     {
         return json_encode(array(
             'key' => $key,
