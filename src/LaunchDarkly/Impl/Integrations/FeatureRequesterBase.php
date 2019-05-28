@@ -198,7 +198,7 @@ class FeatureRequesterBase implements FeatureRequester
             // if ($this->_cache) {
             //     $this->_cache->putCachedString($cacheKey, json_encode(values));
             // }
-        }
+        // }
         foreach ($values as $i => $s) {
             $values[$i] = json_decode($s, true);
         }
