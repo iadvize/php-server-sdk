@@ -190,11 +190,20 @@ class FeatureRequesterBase implements FeatureRequester
         //     $values = json_decode($raw, true);
         // } else {
             $values = $this->readItemStrings($namespace, $keys);
-            error_log("getJsonItems");
-            error_log(print_r($values, true));
             if (!$values) {
                 $values = array();
             }
+
+            $valuesToLogs = array_filter(
+                $values,
+                function ($val) {
+                    return $val['key'] === 'iadvize.conversations.livechat-history-v2';
+                },
+            );
+
+            error_log("getJsonItems");
+            error_log(print_r($valuesToLogs, true));
+
             // if ($this->_cache) {
             //     $this->_cache->putCachedString($cacheKey, json_encode(values));
             // }
