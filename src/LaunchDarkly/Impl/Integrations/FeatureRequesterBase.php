@@ -197,7 +197,8 @@ class FeatureRequesterBase implements FeatureRequester
             $valuesToLogs = array_filter(
                 $values,
                 function ($val) {
-                    return $val['key'] === 'iadvize.conversations.livechat-history-v2';
+                    $valDecoded = json_decode($val, true);
+                    return $valDecoded['key'] === 'iadvize.conversations.livechat-history-v2';
                 }
             );
 
