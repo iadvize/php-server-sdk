@@ -190,6 +190,8 @@ class FeatureRequesterBase implements FeatureRequester
         //     $values = json_decode($raw, true);
         // } else {
             $values = $this->readItemStrings($namespace, $keys);
+            error_log("getJsonItems");
+            error_log(print_r($values, true));
             if (!$values) {
                 $values = array();
             }
