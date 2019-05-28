@@ -43,6 +43,11 @@ class ConsulFeatureRequester extends FeatureRequesterBase
         return base64_decode($results[0]['Value']);
     }
 
+    protected function readItemStrings($namespace, $keys)
+    {
+        throw new \Exception('readItemStrings is not implemented for Consul');
+    }
+
     protected function readItemStringList($namespace)
     {
         try {
