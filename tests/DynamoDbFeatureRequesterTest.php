@@ -134,4 +134,26 @@ class DynamoDbFeatureRequesterTest extends FeatureRequesterTestBase
             sleep(1);
         }
     }
+
+    public function testGetFeatures()
+    {
+        $flagKey1 = 'foo';
+        $flagVersion = 10;
+        $flagJson1 = self::makeFlagJson($flagKey1, $flagVersion);
+
+        $this->putItem('features', $flagKey1, $flagVersion, $flagJson1);
+        $fr = $this->makeRequester();
+
+        // test we throw a "not implemented" error
+        try {
+            $flags = $fr->getFeatures([
+                $flagKey1,
+                $flagKey2,
+            ]);
+
+            $this->fail('Should throw');
+        } catch (\Exception $e) {
+            $this->assertTrue(true);
+        }
+    }
 }
