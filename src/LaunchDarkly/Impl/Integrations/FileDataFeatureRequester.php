@@ -45,6 +45,24 @@ class FileDataFeatureRequester implements FeatureRequester
     }
 
     /**
+     * Gets features flags
+     *
+     * @param $keys array() string key
+     * @return array()|null The decoded FeatureFlags, or null if missing
+     */
+    public function getFeatures($keys)
+    {
+        $filteredFlags = [];
+        foreach ($this->_flags as $key => $value) {
+            if (in_array($key, $keys)) {
+                $filteredFlags[$key] = $value;
+            }
+        }
+
+        return $filteredFlags;
+    }
+
+    /**
      * Gets all feature flags
      *
      * @return array()|null The decoded FeatureFlags, or null if missing
