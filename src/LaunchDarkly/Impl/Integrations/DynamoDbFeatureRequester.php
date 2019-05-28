@@ -51,6 +51,11 @@ class DynamoDbFeatureRequester extends FeatureRequesterBase
         return isset($attr['S']) ? $attr['S'] : null;
     }
 
+    protected function readItemStrings($namespace, $keys)
+    {
+        throw new \Exception('readItemStrings is not implemented for DynamoDb');
+    }
+
     protected function readItemStringList($namespace)
     {
         $items = array();

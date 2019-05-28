@@ -305,6 +305,46 @@ class LDClient
         $this->_eventProcessor->enqueue($event);
     }
 
+    /**
+     */
+    public function flagsState($keys, $user, $options = array())
+    {
+        if (is_null($user) || is_null($user->getKey())) {
+            $this->_logger->warn("flagsState called with null user or null/empty user key! Returning empty state");
+            return new FeatureFlagsState(false);
+        }
+
+        if ($this->isOffline()) {
+            return new FeatureFlagsState(false);
+        }
+
+        try {
+            $flags = $this->_featureRequester->getFeatures($keys);
+        } catch (UnrecoverableHTTPStatusException $e) {
+            $this->handleUnrecoverableError();
+            return new FeatureFlagsState(false);
+        }
+        if ($flags === null) {
+            return new FeatureFlagsState(false);
+        }
+
+        $preloadedRequester = new PreloadedFeatureRequester($this->_featureRequester, $flags);
+        // This saves us from doing repeated queries for prerequisite flags during evaluation
+
+        $state = new FeatureFlagsState(true);
+        $clientOnly = isset($options['clientSideOnly']) && $options['clientSideOnly'];
+        $withReasons = isset($options['withReasons']) && $options['withReasons'];
+        $detailsOnlyIfTracked = isset($options['detailsOnlyForTrackedFlags']) && $options['detailsOnlyForTrackedFlags'];
+        foreach ($flags as $key => $flag) {
+            if ($clientOnly && !$flag->isClientSide()) {
+                continue;
+            }
+            $result = $flag->evaluate($user, $preloadedRequester);
+            $state->addFlag($flag, $result->getDetail(), $withReasons, $detailsOnlyIfTracked);
+        }
+        return $state;
+    }
+
     /** Returns an array mapping Feature Flag keys to their evaluated results for a given user.
      *
      * If the result of a flag's evaluation would have returned the default variation, it will have a null entry.

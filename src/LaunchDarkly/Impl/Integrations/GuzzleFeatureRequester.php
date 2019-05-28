@@ -102,6 +102,36 @@ class GuzzleFeatureRequester implements FeatureRequester
     }
 
     /**
+     * Gets features from a likely cached store
+     *
+     * @param $keys array() string keys
+     * @return array()|null The decoded FeatureFlags, or null if missing
+     */
+    public function getFeatures($keys)
+    {
+        try {
+            // get all flags
+            $uri = $this->_baseUri . self::SDK_FLAGS;
+            $response = $this->_client->get($uri, $this->_defaults);
+            $body = $response->getBody();
+            $flags = array_map(FeatureFlag::getDecoder(), json_decode($body, true));
+
+            // filter only the ones requested
+            $filteredFlags = [];
+            foreach ($flags as $key => $value) {
+                if (in_array($key, $keys)) {
+                    $filteredFlags[$key] = $value;
+                }
+            }
+
+            return $filteredFlags;
+        } catch (BadResponseException $e) {
+            $this->handleUnexpectedStatus($e->getResponse()->getStatusCode(), "GuzzleFeatureRequester::getAll");
+            return null;
+        }
+    }
+
+    /**
      * Gets all features from a likely cached store
      *
      * @return array()|null The decoded FeatureFlags, or null if missing

@@ -21,6 +21,18 @@ class MockFeatureRequester implements FeatureRequester
         return null;
     }
 
+    public function getFeatures($keys)
+    {
+        $filteredFlags = [];
+        foreach (self::$flags as $key => $value) {
+            if (in_array($key, $keys)) {
+                $filteredFlags[$key] = $value;
+            }
+        }
+
+        return $filteredFlags;
+    }
+
     public function getAllFeatures()
     {
         return self::$flags;
