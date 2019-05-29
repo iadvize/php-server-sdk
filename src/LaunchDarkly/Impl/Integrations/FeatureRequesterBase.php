@@ -183,12 +183,18 @@ class FeatureRequesterBase implements FeatureRequester
 
     protected function getJsonItems($namespace, $keys)
     {
-        // $cacheKeyName = implode($keys);
-        // $cacheKey = $this->makeCacheKey($namespace, $cacheKeyName);
-        // $raw = $this->_cache ? $this->_cache->getCachedString($cacheKey) : null;
-        // if ($raw) {
-        //     $values = json_decode($raw, true);
-        // } else {
+        $cacheKeyName = implode($keys);
+        $cacheKey = $this->makeCacheKey($namespace, $cacheKeyName);
+
+        error_log("cacheKey " . $cacheKey);
+
+        $raw = $this->_cache ? $this->_cache->getCachedString($cacheKey) : null;
+
+        error_log("raw " . $raw);
+
+        if ($raw) {
+            $values = json_decode($raw, true);
+        } else {
             $values = $this->readItemStrings($namespace, $keys);
             if (!$values) {
                 $values = array();
@@ -205,10 +211,10 @@ class FeatureRequesterBase implements FeatureRequester
             error_log("getJsonItems");
             error_log(print_r($valuesToLogs, true));
 
-            // if ($this->_cache) {
-            //     $this->_cache->putCachedString($cacheKey, json_encode(values));
-            // }
-        // }
+            if ($this->_cache) {
+                $this->_cache->putCachedString($cacheKey, json_encode(values));
+            }
+        }
         foreach ($values as $i => $s) {
             $values[$i] = json_decode($s, true);
         }
