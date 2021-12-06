@@ -149,7 +149,7 @@ jobs:
             yes '' | sudo pecl install -f apcu-4.0.10 || true;
             echo "extension=apcu.so" | sudo tee -a /usr/local/etc/php/conf.d/apcu.ini;
             echo "apc.enable_cli = 1" | sudo tee -a /usr/local/etc/php/conf.d/apcu.ini
-      - run: composer update --no-progress
+      - run: COMPOSER_MEMORY_LIMIT=-1 composer update --no-progress
       - run: vendor/bin/phpunit --log-junit ~/phpunit/junit.xml integration-tests/CachedRedisFeatureRequesterTest.php
       - store_test_results:
           path: ~/phpunit
