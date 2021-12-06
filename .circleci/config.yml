@@ -43,6 +43,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Run composer self-update
+          command: sudo composer self-update
+      - run:
           name: validate composer.json
           command: composer validate
       - run:
@@ -92,6 +95,9 @@ jobs:
             sudo apt-get -qy install docker-ce
       - run: sudo apt-get -qy install redis-server curl
       - checkout
+      - run:
+          name: Run composer self-update
+          command: sudo composer self-update
       - run:
           name: validate composer.json
           command: composer validate
