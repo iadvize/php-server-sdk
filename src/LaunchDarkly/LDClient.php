@@ -337,7 +337,7 @@ class LDClient
             if ($clientOnly && !$flag->isClientSide()) {
                 continue;
             }
-            $result = $flag->evaluate($user, $preloadedRequester);
+            $result = $flag->evaluate($user, $preloadedRequester, $this->_eventFactoryDefault);
             $state->addFlag($flag, $result->getDetail(), $withReasons, $detailsOnlyIfTracked);
         }
         return $state;
